@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">laba_1</string>
+    <string name="satiety">Satiety</string>
+    <string name="startNumber">0</string>
+    <string name="feed">FEED</string>
+    <string name="share">share</string>
+    <string name="about">about</string>
+    <string name="group">951006</string>
+    <string name="name">Авсюкевич Максим Александрович</string>
+    <string name="laba">Лабораторная №1</string>
+    <string name="save">save</string>
+    <string name="result">results</string>
+</resources>
