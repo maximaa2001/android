@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -34,7 +36,7 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         db = database.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Database.TABLE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Database.TABLE + " WHERE  " + Database.COLUMN_EMAIL +" = " + "\'" + GoogleSignIn.getLastSignedInAccount(this).getEmail() + "\'", null);
         while (cursor.moveToNext()){
             String id = cursor.getString(0);
             String res = cursor.getString(1);

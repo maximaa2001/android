@@ -1,16 +1,26 @@
 package by.bsuir.laba_1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.signin.internal.SignInClientImpl;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.Date;
 
@@ -61,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Database.COLUMN_DATE, new Date().toString());
         contentValues.put(Database.COLUMN_RESULT, textCounter.getText().toString());
+        contentValues.put(Database.COLUMN_EMAIL,  GoogleSignIn.getLastSignedInAccount(this).getEmail());
         db.insert(Database.TABLE, null, contentValues);
     }
     public void goToResults(View view){
@@ -71,5 +82,20 @@ public class MainActivity extends AppCompatActivity {
     private void animation(){
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.animation);
         cat.startAnimation(animation);
+    }
+
+    public void signOut(View view){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleSignInClient signInClient = GoogleSignIn.getClient(this, gso);
+        signInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

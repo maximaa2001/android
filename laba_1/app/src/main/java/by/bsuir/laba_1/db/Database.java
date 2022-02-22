@@ -6,12 +6,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "laba_1.db";
-    private static final int SCHEMA = 1;
+    private static final int SCHEMA = 2;
     public static final String TABLE = "result";
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_RESULT = "res";
     public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_EMAIL = "email";
 
 
     public Database(Context context) {
@@ -21,7 +22,7 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " ( " + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_RESULT + " TEXT, " + COLUMN_DATE + " TEXT);");
+                COLUMN_RESULT + " TEXT, " + COLUMN_DATE + " TEXT, " +  COLUMN_EMAIL + " TEXT ) ");
     }
 
     @Override
