@@ -2,13 +2,6 @@ package by.bsuir.laba_2.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
-
-import lombok.Builder;
-import lombok.Data;
-
-@Data
-@Builder
 public class ProductDto  {
     @JsonProperty("id")
     private Integer id;
