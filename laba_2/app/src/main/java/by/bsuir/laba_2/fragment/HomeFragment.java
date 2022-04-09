@@ -1,8 +1,10 @@
 package by.bsuir.laba_2.fragment;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import by.bsuir.laba_2.AboutProductActivity;
+import by.bsuir.laba_2.Click;
 import by.bsuir.laba_2.R;
 import by.bsuir.laba_2.dto.ProductDto;
 import by.bsuir.laba_2.recycleView.ProductAdapter;
@@ -28,6 +32,7 @@ import by.bsuir.laba_2.service.ApiService;
 public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    public static final String PRODUCT = "product";
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -38,7 +43,8 @@ public class HomeFragment extends Fragment {
         new ApiTask().execute();
         return view;
     }
-    private Map<String, Object> to(List<ProductDto> productDtos){
+
+    private Map<String, Object> to(List<ProductDto> productDtos) {
         Map<String, Object> map = new LinkedHashMap<>();
         for (int i = 0; i < productDtos.size(); i++) {
             map.put(String.valueOf(i), productDtos.get(i));
@@ -46,7 +52,7 @@ public class HomeFragment extends Fragment {
         return map;
     }
 
-    class ApiTask extends AsyncTask<Void, Void, Void>{
+    class ApiTask extends AsyncTask<Void, Void, Void> {
 
         private final ApiService apiService = ApiService.getInstance();
 
@@ -58,7 +64,7 @@ public class HomeFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ProductAdapter productAdapter = new ProductAdapter(getContext(),to(allProducts));
+                        ProductAdapter productAdapter = new ProductAdapter(getContext(), to(allProducts), new ClickListener());
                         recyclerView.setAdapter(productAdapter);
                     }
                 });
@@ -67,6 +73,16 @@ public class HomeFragment extends Fragment {
                 e.printStackTrace();
             }
             return null;
+        }
+    }
+
+    class ClickListener implements Click {
+
+        @Override
+        public void click(ProductDto product) {
+            Intent intent = new Intent(getContext(), AboutProductActivity.class);
+            intent.putExtra(PRODUCT, product);
+            startActivity(intent);
         }
     }
 }

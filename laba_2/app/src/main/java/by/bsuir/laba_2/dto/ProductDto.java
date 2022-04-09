@@ -1,8 +1,13 @@
 package by.bsuir.laba_2.dto;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ProductDto  {
+import java.io.Serializable;
+
+public class ProductDto implements Parcelable {
     @JsonProperty("id")
     private Integer id;
 
@@ -91,5 +96,40 @@ public class ProductDto  {
 
     public void setRating(RatingDto rating) {
         this.rating = rating;
+    }
+
+    public static final Creator<ProductDto> CREATOR = new Creator<ProductDto>() {
+        @Override
+        public ProductDto createFromParcel(Parcel parcel) {
+            Integer id = parcel.readInt();
+            String title = parcel.readString();
+            Double price = parcel.readDouble();
+            String description =  parcel.readString();
+            String category = parcel.readString();
+            String image = parcel.readString();
+            RatingDto ratingDto = parcel.readTypedObject(RatingDto.CREATOR);
+            return new ProductDto(id, title, price, description, category, image, ratingDto);
+        }
+
+        @Override
+        public ProductDto[] newArray(int i) {
+            return new ProductDto[i];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeDouble(price);
+        parcel.writeString(description);
+        parcel.writeString(category);
+        parcel.writeString(image);
+        parcel.writeTypedObject(rating, 0);
     }
 }

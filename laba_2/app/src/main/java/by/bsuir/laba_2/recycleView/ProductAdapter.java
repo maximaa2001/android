@@ -1,6 +1,7 @@
 package by.bsuir.laba_2.recycleView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -29,6 +30,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import by.bsuir.laba_2.AboutProductActivity;
+import by.bsuir.laba_2.Click;
 import by.bsuir.laba_2.R;
 import by.bsuir.laba_2.dto.ProductDto;
 import by.bsuir.laba_2.dto.RatingDto;
@@ -37,9 +40,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     private final LayoutInflater inflater;
     private final List<ProductDto> products;
+    private Click click;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public ProductAdapter(Context context, Map<String, Object> map) {
+    public ProductAdapter(Context context, Map<String, Object> map, Click click) {
+        this.click = click;
         products = new ArrayList<>();
         Set<Map.Entry<String, Object>> entries = map.entrySet();
         Iterator<Map.Entry<String, Object>> iterator = entries.iterator();
@@ -121,9 +126,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 @Override
                 public void onClick(View view) {
                     ProductDto productDto = products.get(getAdapterPosition());
-                    Toast toast = Toast.makeText(inflater.getContext(), String.valueOf(productDto.getId()),
-                            Toast.LENGTH_SHORT);
-                    toast.show();
+                    click.click(productDto);
                 }
             });
         }

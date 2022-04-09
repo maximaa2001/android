@@ -2,6 +2,8 @@ package by.bsuir.laba_2.service;
 
 import static by.bsuir.laba_2.constant.AppConst.GET_ALL_PRODUCTS;
 
+import android.widget.ImageView;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -32,15 +34,18 @@ public class ApiService {
     }
 
     public List<ProductDto> getAllProducts() throws IOException {
-        Request request = new Request.Builder()
-                .get().url(GET_ALL_PRODUCTS).build();
-        Call call = client.newCall(request);
-        Response response = call.execute();
+        Response response = getRequest(GET_ALL_PRODUCTS);
         return parseFromJson(response.body().string(), ArrayList.class);
+    }
+
+    private Response getRequest(String uri) throws IOException{
+        Request request = new Request.Builder()
+                .get().url(uri).build();
+        Call call = client.newCall(request);
+        return call.execute();
     }
 
     private <T> T parseFromJson(String json, Class<T> clazz) throws IOException {
         return objectMapper.readValue(json, clazz);
     }
-
 }
