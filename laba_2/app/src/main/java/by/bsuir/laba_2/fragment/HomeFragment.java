@@ -47,6 +47,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = view.findViewById(R.id.recycle_view);
+        recyclerView.removeAllViews();
         Database database = new Database(getContext());
         dbWrite = database.getWritableDatabase();
         dbRead = database.getReadableDatabase();
@@ -60,6 +61,8 @@ public class HomeFragment extends Fragment {
         if(args != null){
             filter.put(FilterConst.FROM_PRICE,args.getDouble(FilterConst.FROM_PRICE));
             filter.put(FilterConst.TO_PRICE,args.getDouble(FilterConst.TO_PRICE));
+            args.remove(FilterConst.FROM_PRICE);
+            args.remove(FilterConst.TO_PRICE);
         }
         return filter;
     }
