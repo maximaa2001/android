@@ -43,16 +43,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private Click click;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public ProductAdapter(Context context, Map<String, Object> map, Click click) {
+    public ProductAdapter(Context context, List<ProductDto> products, Click click) {
         this.click = click;
-        products = new ArrayList<>();
-        Set<Map.Entry<String, Object>> entries = map.entrySet();
-        Iterator<Map.Entry<String, Object>> iterator = entries.iterator();
-        while (iterator.hasNext()) {
-            ProductDto productDto = of((Map<String, Object>) iterator.next().getValue());
-            products.add(productDto);
-        }
-
+        this.products = products;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -72,45 +65,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public int getItemCount() {
         return products.size();
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private ProductDto of(Map<String, Object> map) {
-        Class<ProductDto> productDtoClass = ProductDto.class;
-        Field[] declaredFields = productDtoClass.getDeclaredFields();
-        List<String> fieldNames = Arrays.stream(declaredFields).map(field -> field.getName()).collect(Collectors.toList());
-        ProductDto productDto = new ProductDto();
-        for (int i = 0; i < fieldNames.size(); i++) {
-            switch (fieldNames.get(i)) {
-                case "id":
-                    productDto.setId((Integer) map.get(fieldNames.get(i)));
-                    break;
-                case "title":
-                    productDto.setTitle((String) map.get(fieldNames.get(i)));
-                    break;
-                case "price":
-                    productDto.setPrice(Double.valueOf(String.valueOf(map.get(fieldNames.get(i)))));
-                    break;
-                case "description":
-                    productDto.setDescription(String.valueOf(map.get(fieldNames.get(i))));
-                    break;
-                case "category":
-                    productDto.setCategory(String.valueOf(map.get(fieldNames.get(i))));
-                    break;
-                case "image":
-                    productDto.setImage(String.valueOf(map.get(fieldNames.get(i))));
-                    break;
-                case "rating":
-                    RatingDto ratingDto = new RatingDto();
-                    LinkedHashMap<String, Object> o = (LinkedHashMap<String, Object>) map.get(fieldNames.get(i));
-                    ratingDto.setRate(Double.valueOf(String.valueOf(o.get("rate"))));
-                    ratingDto.setCount(Integer.valueOf(String.valueOf(o.get("count"))));
-                    productDto.setRating(ratingDto);
-                    break;
-            }
-        }
-        return productDto;
-    }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;

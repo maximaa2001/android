@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 
+import by.bsuir.laba_2.constant.FilterConst;
 import by.bsuir.laba_2.dto.ProductDto;
 import by.bsuir.laba_2.fragment.HomeFragment;
 
@@ -26,7 +27,7 @@ public class AboutProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about_product);
 
         Bundle args = getIntent().getExtras();
-        ProductDto product = args.getParcelable(HomeFragment.PRODUCT);
+        ProductDto product = args.getParcelable(FilterConst.PRODUCT);
 
             imageView = findViewById(R.id.productImage);
             title = findViewById(R.id.productTitle);
